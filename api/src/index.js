@@ -1,5 +1,5 @@
-const express  = require('express');
-const mysql =  require('mysql');
+const express = require('express');
+const mysql = require('mysql');
 const app = express();
 
 const connection = mysql.createConnection({
@@ -10,12 +10,12 @@ const connection = mysql.createConnection({
 });
 
 connection.connect();
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 app.get('/getclient/:id?', (req, res) => {
 
-    connection.query('SELECT * FROM cliente where id = ' + req.params.id, function (error, results){
-        if(error){
+    connection.query('SELECT * FROM cliente where id = ' + req.params.id, function (error, results) {
+        if (error) {
             throw 'teste' + error
         }
         res.send(
@@ -31,23 +31,23 @@ app.get('/getclient/:id?', (req, res) => {
         );
     })
 })
-app.get('/getclients', function (req, res){
-   connection.query('SELECT * FROM cliente', function (error, results){
-       if(error){
-           throw error
-       }
-       res.send(
-           results.map(
-               item => ({
-                   id: item.id,
-                   nome: item.nome,
-                   rua: item.rua,
-                   cidade: item.cidade,
-                   pais: item.pais
-               })
-           )
-       );
-   })
+app.get('/getclients', function (req, res) {
+    connection.query('SELECT * FROM cliente', function (error, results) {
+        if (error) {
+            throw error
+        }
+        res.send(
+            results.map(
+                item => ({
+                    id: item.id,
+                    nome: item.nome,
+                    rua: item.rua,
+                    cidade: item.cidade,
+                    pais: item.pais
+                })
+            )
+        );
+    })
 });
 app.post('/setclient', (req, res) => {
 
@@ -55,8 +55,9 @@ app.post('/setclient', (req, res) => {
     const rua = req.body.rua;
     const cidade = req.body.cidade;
     const pais = req.body.pais;
-    connection.query(`INSERT INTO cliente(nome, rua, cidade, pais) VALUES('${nome}','${rua}','${cidade}','${pais}')`, function (error, results){
-        if(error){
+    connection.query(`INSERT INTO cliente(nome, rua, cidade, pais)
+                      VALUES ('${nome}', '${rua}', '${cidade}', '${pais}')`, function (error, results) {
+        if (error) {
             throw 'teste' + error
         }
         res.send(
@@ -70,15 +71,28 @@ app.put('/setclient/:id?', (req, res) => {
     const rua = req.body.rua;
     const cidade = req.body.cidade;
     const pais = req.body.pais;
+    var resultado = '';
 
-    connection.query(`UPDATE cliente set nome = '${nome}',  rua = '${rua}', cidade = '${cidade}', pais = '${pais}' where id = ` + req.params.id, function (error, results){
-        if(error){
-            throw error
-        }
-        res.send(
-            'atualizado!'
-        );
-    })
+    if(nome !== 'undefined'){
+        connection.query(`UPDATE cliente
+                          set nome   = '${nome}',
+                              rua    = '${rua}',
+                              cidade = '${cidade}',
+                              pais   = '${pais}'
+                          where id = ` + req.params.id, function (error, results) {
+            if (error) {
+                throw error
+            }
+            console.log(results, nome)
+        })
+    }else{
+        resultado = '{"erro": "Algum parametro incorreto, verificar a estrutura solicitada!"}'
+    }
+
+    res.send(
+        resultado
+    );
+
 })
 
 app.post('/setdelivery', (req, res) => {
@@ -87,8 +101,9 @@ app.post('/setdelivery', (req, res) => {
     const lat = req.body.lat;
     const lng = req.body.lng;
     const cliente_id = req.body.cliente_id;
-    connection.query(`INSERT INTO entrega (peso, lat, lng, cliente_id) VALUES('${peso}','${lat}','${lng}','${cliente_id}')`, function (error, results){
-        if(error){
+    connection.query(`INSERT INTO entrega (peso, lat, lng, cliente_id)
+                      VALUES ('${peso}', '${lat}', '${lng}', '${cliente_id}')`, function (error, results) {
+        if (error) {
             throw error
         }
         res.send(
@@ -96,9 +111,9 @@ app.post('/setdelivery', (req, res) => {
         );
     });
 });
-app.get('/getdeliveries', function (req, res){
-    connection.query('SELECT * FROM entrega', function (error, results){
-        if(error){
+app.get('/getdeliveries', function (req, res) {
+    connection.query('SELECT * FROM entrega', function (error, results) {
+        if (error) {
             throw 'teste' + error
         }
         res.send(
@@ -115,8 +130,8 @@ app.get('/getdeliveries', function (req, res){
     })
 });
 app.get('/getdelivery/:id?', (req, res) => {
-    connection.query('SELECT * FROM entrega where id = ' + req.params.id, function (error, results){
-        if(error){
+    connection.query('SELECT * FROM entrega where id = ' + req.params.id, function (error, results) {
+        if (error) {
             throw error
         }
         res.send(
@@ -133,6 +148,6 @@ app.get('/getdelivery/:id?', (req, res) => {
     })
 })
 
-app.listen(9001, '0.0.0.0', function (){
+app.listen(9001, '0.0.0.0', function () {
     console.log('Up And Running on 9001');
 })
