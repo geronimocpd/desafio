@@ -1,5 +1,6 @@
 CREATE DATABASE IF NOT EXISTS trialdatabase;
 USE trialdatabase;
+    /* Criando database*/
 
 CREATE TABLE  IF NOT EXISTS cliente(
     id INT(11) AUTO_INCREMENT,
