@@ -13,3 +13,8 @@ Em caso de sistema Windows executar o script dentro do container
         mysql -uroot -ppassword
 
 E executar  o script api/db/database.sql
+
+Ativar a API Google maps e Criar o arquivo .env.local
+incluindo a variavel 
+
+        REACT_APP_GOOGLE_MAPS_API_KEY=
