@@ -83,7 +83,6 @@ app.put('/setclient/:id?', (req, res) => {
             if (error) {
                 throw error
             }
-            console.log(results, nome)
         })
     }else{
         resultado = '{"erro": "Algum parametro incorreto, verificar a estrutura solicitada!"}'
